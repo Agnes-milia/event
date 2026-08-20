@@ -41,12 +41,30 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 #     updated_at: DateTime!
 # }
 
+#import Mutations/*.graphql
+
 type Query {
     users: [User!]! @all
+    user(id: ID! @eq): User @find  
+    # itt automatikusan megtalálja az azonosítót (@eq jelentése:
+    # WHERE oszlop = érték), 
+    # de ha eltérnél a névtől:
+    # user(felhasznalo_azonosito: ID @eq(key: "id")): User @find
+    events: [Event!]! @all
+    registrations: [Registration!]! @all
+    allUsers: [User!]!  @paginate
 }
 
 type User {
     id: ID!
     name: String!
     email: String!
+    events: [Event!]!  @belongsToMany  # ez egy fg hivatkozás a User Modelben
 }
+
+type Event {
+    id: ID!
+    title: String!
+}
+
+

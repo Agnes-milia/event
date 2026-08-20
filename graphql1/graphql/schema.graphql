@@ -53,6 +53,8 @@ type Query {
     events: [Event!]! @all
     registrations: [Registration!]! @all
     allUsers: [User!]!  @paginate
+
+    me: User! @auth @guard(with: ["sanctum"])
 }
 
 type User {

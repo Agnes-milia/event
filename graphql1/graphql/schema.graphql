@@ -44,14 +44,21 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 #import Mutations/*.graphql
 
 type Query {
-    users: [User!]! @all
+    greetings: String!
+    # users: [User!]! @all
+    # dirketívára példák:
+    totalAges: Int! @aggregate(model: "User", column: "age", function: SUM)
+    averageAges: Int! @aggregate(model: "User", column: "age", function: AVG)
+    userAdultsCount: Int! @aggregate(model: "User", column: "id", function: COUNT, scope: "adult")
+    # resolverre példa:
+    userOlders(olderThan: Int!): [User!]! @field(resolver: "App\\GraphQL\\Queries\\User@userOlder")
+    users: [User!]! @paginate
     user(id: ID! @eq): User @find  
     # itt automatikusan megtalálja az azonosítót (@eq jelentése:
     # WHERE oszlop = érték), 
     # de ha eltérnél a névtől:
     # user(felhasznalo_azonosito: ID @eq(key: "id")): User @find
     events: [Event!]! @all
-    registrations: [Registration!]! @all
     allUsers: [User!]!  @paginate
 
     me: User! @auth @guard(with: ["sanctum"])
@@ -61,6 +68,7 @@ type User {
     id: ID!
     name: String!
     email: String!
+    age: Int!
     events: [Event!]!  @belongsToMany  # ez egy fg hivatkozás a User Modelben
 }
 

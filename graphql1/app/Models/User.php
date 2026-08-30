@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password'])] //PHP atrribútum
+#[Fillable(['name', 'email', 'age', 'password'])] //PHP atrribútum
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -36,5 +36,10 @@ class User extends Authenticatable
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'registrations');
+    }
+
+    public function adult (Builder $query): Builder
+    {
+        return $query->where('age', '>=', 18);
     }
 }

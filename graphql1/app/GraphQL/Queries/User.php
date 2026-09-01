@@ -13,6 +13,18 @@ final readonly class User
     }
     public function userOlder($root, array $args)
     {
-        return ModelsUser::where('age', '>', $args['olderThan'])->get();
+        # return ModelsUser::where('age', '>', $args['olderThan'])->get();
+        return ModelsUser::where('year_of_birth', '<', now()->year-$args['olderThan'])->get();
     }
+
+    public function totalAgesCount(): int
+    {
+        return (int) ModelsUser::query()
+            ->selectRaw(
+                'SUM(? - year_of_birth) as total',
+                [now()->year]
+            )
+            ->value('total') ?? 0;
+    }
+
 }

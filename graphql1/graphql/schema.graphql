@@ -47,11 +47,13 @@ type Query {
     greetings: String!
     # users: [User!]! @all
     # dirketívára példák:
-    totalAges: Int! @aggregate(model: "User", column: "age", function: SUM)
-    averageAges: Int! @aggregate(model: "User", column: "age", function: AVG)
-    userAdultsCount: Int! @aggregate(model: "User", column: "id", function: COUNT, scope: "adult")
+    # totalAges: Int! @aggregate(model: "User", column: "age", function: SUM)
+    # averageAges: Int! @aggregate(model: "User", column: "age", function: AVG)
+    userAdultsCount: Int! @aggregate(model: "User", column: "id", function: COUNT, scopes: ["adult"])
     # resolverre példa:
     userOlders(olderThan: Int!): [User!]! @field(resolver: "App\\GraphQL\\Queries\\User@userOlder")
+    totalAges: Int! @field(resolver: "App\\GraphQL\\Queries\\User@totalAgesCount")
+    
     users: [User!]! @paginate
     user(id: ID! @eq): User @find  
     # itt automatikusan megtalálja az azonosítót (@eq jelentése:
@@ -68,7 +70,8 @@ type User {
     id: ID!
     name: String!
     email: String!
-    age: Int!
+    age: Int! @method(name: "ageCount")
+    year_of_birth: Int! 
     events: [Event!]!  @belongsToMany  # ez egy fg hivatkozás a User Modelben
 }
 

@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,8 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Ramsey\Uuid\Type\Integer;
 
-#[Fillable(['name', 'email', 'age', 'password'])] //PHP atrribútum
+#[Fillable(['name', 'email', 'year_of_birth', 'password'])] //PHP atrribútum
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -38,8 +42,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Event::class, 'registrations');
     }
 
-    public function adult (Builder $query): Builder
+    public function ageCount(): int
     {
-        return $query->where('age', '>=', 18);
+        return now()->year - $this->year_of_birth;
+    }
+
+    public function scopeAdult(Builder $query): Builder
+    {
+        return $query->where(
+            'year_of_birth',
+            '<=',
+            now()->year - 18
+        );
     }
 }

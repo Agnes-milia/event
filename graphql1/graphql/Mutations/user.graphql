@@ -2,4 +2,6 @@ extend type Mutation {
     createUser(name: String!, email: String!, age: Int!, year_of_birth: Int!, password: String!): User! @create
     updateUser(id: ID! @eq, name: String, email: String, age: Int, year_of_birth: Int, password: String): User! @update
     deleteUser(id: ID! @eq): User @delete
+    # authorizációval:
+    deleteUserAuth(id: ID! @eq): User @delete @can(ability: "delete-user")
 }

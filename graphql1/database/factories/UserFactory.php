@@ -31,6 +31,7 @@ class UserFactory extends Factory
             // 'age' => random_int(0, 100),
             'year_of_birth' => random_int(1950, 2026),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'user',
             'remember_token' => Str::random(10),
         ];
     }

@@ -15,9 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PhpParser\Node\Expr\Cast\Bool_;
 use Ramsey\Uuid\Type\Integer;
 
-#[Fillable(['name', 'email', 'year_of_birth', 'password'])] //PHP atrribútum
+#[Fillable(['name', 'email', 'year_of_birth', 'password', 'role'])] //PHP atrribútum
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -37,6 +38,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === "admin";
+    }
+    
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'registrations');

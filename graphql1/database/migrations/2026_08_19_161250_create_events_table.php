@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string("title");
+            $table->date("start");
+            $table->integer("early_bird_price");
+            $table->float("price_multiplier");
+            $table->date("early_bird_until");
+
             $table->timestamps();
         });
     }

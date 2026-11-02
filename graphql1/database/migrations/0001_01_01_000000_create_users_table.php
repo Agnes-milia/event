@@ -20,7 +20,7 @@ return new class extends Migration
             # $table->integer('age');
             $table->year('year_of_birth');
             $table->string('password');
-            $table->enum('role', ["user", "admin"]);
+            $table->enum('role', ["user", "admin"])->default("user");
             $table->rememberToken();
             $table->timestamps();
         });
@@ -31,6 +31,13 @@ return new class extends Migration
             "year_of_birth" => "2000",
             "password" => "admin2000",
             "role" => "admin"
+        ]);
+
+        User::create([
+            "name" => "Teszt1",
+            "email" => "test1@test.hu",
+            "year_of_birth" => "2010",
+            "password" => "test12345"
         ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

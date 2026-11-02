@@ -8,6 +8,14 @@ use Illuminate\Auth\Access\Response;
 
 class RegistrationPolicy
 {
+    //?bool jelentése: true vagy false vagy null
+    public function before(User $user): ?bool
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+        return null; // Ha nem admin, megy tovább a lentebbi checkekre
+    }
     /**
      * Determine whether the user can view any models.
      */
@@ -21,7 +29,8 @@ class RegistrationPolicy
      */
     public function view(User $user, registration $registration): bool
     {
-        return false;
+        // Csak az, akié a regisztráció
+        return $user->id === $registration->user_id;
     }
 
     /**
@@ -37,7 +46,7 @@ class RegistrationPolicy
      */
     public function update(User $user, registration $registration): bool
     {
-        return false;
+        return $user->id === $registration->user_id;
     }
 
     /**

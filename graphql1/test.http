@@ -1,0 +1,32 @@
+@base = http://127.0.0.1:8000/api
+# Írd át egy létező párra (lista: GET /travels)
+@registration = 1
+@event = 2
+@user = 6
+@token = 2|kE5cdmUMBZP2IlMFDvL2x9EZitETSjxlDVgKQJ21c38ffce7
+
+### 
+GET {{base}}/registrations
+Accept: application/json
+
+### Show
+GET {{base}}/registrations/{{registration}}
+Accept: application/json
+
+### Store 
+POST {{base}}/registrations
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": {{user}},
+    "event_id": {{event}}
+}
+### Saját jelentkezések
+GET {{base}}/registrations/{{registration}}
+Accept: application/json
+Authorization: Bearer {{token}}
+### Bejelentkezett felh-ó
+GET {{base}}/user
+Accept: application/json
+Authorization: Bearer {{token}}

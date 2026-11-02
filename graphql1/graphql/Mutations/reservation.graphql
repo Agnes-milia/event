@@ -1,0 +1,3 @@
+extend type Mutation {
+    updateRegistration(id: ID!, user_id: ID, event_id: ID): Registration @guard @update @can(ability: "update", find: "id")
+}

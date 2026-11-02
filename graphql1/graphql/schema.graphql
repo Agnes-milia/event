@@ -62,8 +62,12 @@ type Query {
     users(name: String @where(operator: "like")): [User!]! @all
     
     # autentikáció:
-    me: User! @auth @guard(with: ["sanctum"])
-    
+    me: User! @auth @guard
+    # autorizáció:
+    registration(id: ID! @eq): Registration 
+        @guard
+        @find
+        @can(ability: "view", find: "id")
     # resolverre példa:
     userOlders(olderThan: Int!): [User!]! @field(resolver: "App\\GraphQL\\Queries\\User@userOlder")
     totalAges: Int! @field(resolver: "App\\GraphQL\\Queries\\User@totalAgesCount")
@@ -84,6 +88,16 @@ type User {
 type Event {
     id: ID!
     title: String!
+    early_bird_price: Int!
+    price_multiplier: Float!
+    early_bird_until: Date!
+}
+
+type Registration {
+    id: ID!
+    user_id: ID!
+    event_id: ID!
+    event: Event! @belongsTo
 }
 
 

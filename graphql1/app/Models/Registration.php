@@ -16,4 +16,15 @@ class Registration extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function priceCount(): int
+    {
+        $event = $this->event;
+        $normal =  now() > $event->early_bird_until?true:false;
+        $price = $this->event->early_bird_price;
+        if ($normal) {
+            $price *= $this->event->price_multiplier;
+        }
+        return (int)$price;
+    }
 }

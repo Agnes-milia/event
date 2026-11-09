@@ -1,6 +1,6 @@
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 "Indicates what fields are available at the top level of a query operation."
 
 # type Query {
@@ -41,6 +41,7 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 #     updated_at: DateTime!
 # }
 
+
 #import Mutations/*.graphql
 
 type Query {
@@ -60,6 +61,8 @@ type Query {
     allUsers: [User!]!  @paginate
     # példa like-ra; %: bármennyi karakter, _:egy karakter
     users(name: String @where(operator: "like")): [User!]! @all
+    # példa model fg-re és belongsto-ra:
+    registrations: [Registration!]! @all
     
     # autentikáció:
     me: User! @auth @guard
@@ -98,6 +101,7 @@ type Registration {
     user_id: ID!
     event_id: ID!
     event: Event! @belongsTo
+    price: Int! @method(name: "priceCount")
 }
 
 

@@ -1,3 +1,12 @@
 extend type Mutation {
     updateRegistration(id: ID!, user_id: ID, event_id: ID): Registration @guard @update @can(ability: "update", find: "id")
+    deleteRegistration(id: ID! @eq): Registration @delete
+    restoreRegistration(id: ID! @eq): Registration
+        @field(resolver: "App\\GraphQL\\Mutations\\RegistrationMutation@restore")
+    withTrashRegistrations: [Registration!]!
+        @field(resolver: "App\\GraphQL\\Mutations\\RegistrationMutation@withTrash")
+    onlyTrashRegistrations: [Registration!]!
+        @field(resolver: "App\\GraphQL\\Mutations\\RegistrationMutation@onlyTrash")
+    forceDeleteRegistration(id: ID! @eq): Registration
+        @field(resolver: "App\\GraphQL\\Mutations\\RegistrationMutation@forceDelete")
 }
